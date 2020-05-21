@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Game SRV .NET Core Launch (console)",
+            "name": "Game Srv",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
