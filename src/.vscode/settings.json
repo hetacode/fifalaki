@@ -3,6 +3,8 @@
     "Game/bin": true,
     "Game/obj": true,
     "Contracts/obj": true,
-    "Contracts/bin": true
+    "Contracts/bin": true,
+    "Arch/bin": true,
+    "Arch/obj": true
   }
 }
