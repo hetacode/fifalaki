@@ -31,6 +31,11 @@ namespace Game
             _gameTask = Task.Run(Running);
         }
 
+        public void Answer(string playerId, int answerId)
+        {
+
+        }
+
         private void Running()
         {
             for (; ; )
