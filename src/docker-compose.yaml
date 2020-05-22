@@ -5,3 +5,16 @@ services:
     ports: 
       - 5672:5672
       - 15672:15672
+  game:
+    build:
+      context: .
+      dockerfile: Game/Dockerfile
+      target: prod
+    image: fifalaki-game:latest
+    depends_on: 
+      - rabbit
+    healthcheck:
+      test: curl -f http://rabbit:5672 || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 10
