@@ -36,7 +36,17 @@ namespace Game
                 case GiveAnswer giveAnswer:
                     GiveAnswer(giveAnswer);
                     break;
+                case CallEndGame endGame:
+                    CallEndGame(endGame);
+                    break;
             }
+        }
+
+        private void CallEndGame(CallEndGame endGame)
+        {
+             var game = _games[endGame.GameId];
+             game.EndGame();
+             _games.Remove(endGame.GameId);
         }
 
         private void GiveAnswer(GiveAnswer giveAnswer)

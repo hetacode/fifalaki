@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Contracts.Events;
@@ -19,26 +20,36 @@ namespace Arch.Bus
 
         public void Consumer(Action<(string eventType, string body)> callback)
         {
-            var factory = new ConnectionFactory()
+            Task.Run(() =>
             {
-                HostName = _server
-            };
+                var factory = new ConnectionFactory()
+                {
+                    Uri = new Uri(_server)
+                };
 
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
+                using var connection = factory.CreateConnection();
+                using var channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(_exchange, ExchangeType.Fanout, false, false, null);
-            channel.QueueDeclare(_queue, false, false, false, null);
-            channel.QueueBind(_queue, _exchange, "", null);
+                channel.ExchangeDeclare(_exchange, ExchangeType.Fanout, false, false, null);
+                channel.QueueDeclare(_queue, false, false, false, null);
+                channel.QueueBind(_queue, _exchange, "", null);
 
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (sender, args) =>
-            {
-                using var result = JsonDocument.Parse(args.Body);
-                callback((result.RootElement.GetProperty("Type").GetString(), args.Body.ToString()));
-                channel.BasicAck(args.DeliveryTag, false);
-            };
-            channel.BasicConsume(queue: _queue, autoAck: false, consumer: consumer);
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (sender, args) =>
+                {
+                    using var result = JsonDocument.Parse(args.Body);
+                    callback(
+                        (
+                            result.RootElement.GetProperty("Type").GetString(),
+                             Encoding.UTF8.GetString(args.Body.Span)
+                        )
+                    );
+                    channel.BasicAck(args.DeliveryTag, false);
+                };
+                channel.BasicConsume(queue: _queue, autoAck: false, consumer: consumer);
+
+                Console.Read();
+            });
         }
 
         public Task Publish(Event Event)

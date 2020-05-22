@@ -8,6 +8,7 @@ namespace Game
     {
         private Task _gameTask;
         private bool _isRunning;
+        private bool _stop;
 
         public State GameState { get; }
 
@@ -26,6 +27,7 @@ namespace Game
 
         public void Start()
         {
+            Console.WriteLine($"Game is start | Id: {GameState.GameMasterId}");
             GameState.CurrentState = EnumGameState.WaitingForNextLevel;
             GameState.CurrentTime = 0;
             _gameTask = Task.Run(Running);
@@ -33,13 +35,26 @@ namespace Game
 
         public void Answer(string playerId, int answerId)
         {
+            if (GameState.LevelData.CorrectWordIndex == answerId)
+            {
+                GameState.LevelData.WinnerId = playerId;
+            }
+            else
+            {
+                GameState.LevelData.LooserId = playerId;
+            }
 
+            GameState.CurrentState = EnumGameState.Summary;
+            ShowSummary();
         }
 
         private void Running()
         {
             for (; ; )
             {
+                if (_stop) {
+                    return;
+                }
                 if (!_isRunning)
                 {
                     continue;
@@ -75,14 +90,15 @@ namespace Game
             }
         }
 
-        private void EndGame()
+        public void EndGame()
         {
             _isRunning = false;
+            _stop = true;
         }
 
         private void ShowSummary()
         {
-
+            
         }
 
         private void NextLevel()

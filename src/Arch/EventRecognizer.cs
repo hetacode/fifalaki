@@ -15,8 +15,14 @@ namespace Arch
             {
                 Assembly.GetAssembly(typeof(Event))
                     .GetTypes()
-                    .Where(w => w.BaseType == typeof(Event) || w.BaseType == typeof(FromGameEvent))
-                    .Select(s => new { TypeName = s.GetProperty("Type").GetValue(s).ToString(), Type = s })
+                    .Where(w => w != typeof(FromGameEvent) && (w.BaseType == typeof(Event) || w.BaseType == typeof(FromGameEvent)))
+                    .Select(s =>{
+
+                    return new
+                    {
+                        TypeName = s.GetProperty("Type").GetValue(Activator.CreateInstance(s)).ToString(),
+                        Type = s
+                    };})
                     .ToList()
                     .ForEach(f =>
                     {

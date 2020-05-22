@@ -20,6 +20,8 @@ namespace Game.Models
 
         public EnumGameState CurrentState { get; set; }
 
+        public LevelData LevelData { get; set; }
+
         public int TotalStateTime()
             => CurrentState switch
             {
@@ -29,6 +31,14 @@ namespace Game.Models
                 EnumGameState.WaitingForPlayers => -1,
                 _ => -1
             };
+    }
+
+    public class LevelData {
+        public int CorrectWordIndex { get; set; }    
+
+        public List<string> Words { get; set; }
+        public string WinnerId { get; set; }
+        public string LooserId { get; set; }
     }
 
     public enum EnumGameState

@@ -34,7 +34,11 @@ namespace Contracts.Events
         public string GameId { get; set; }
 
         public int AnswerId { get; set; }
+    }
 
+    public class CallEndGame: Event {
+         public override string Type => "CallEndGame";
 
+         public string GameId { get; set; }
     }
 }
