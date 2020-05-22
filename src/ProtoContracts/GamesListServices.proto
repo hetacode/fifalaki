@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProtoContracts";
+
+message GetGamesListReq {
+}
+
+message GetGamesListRes {
+    repeated GameItem items = 1;
+}
+message GameItem {
+    string id = 1;
+}
+
+service GamesListService {
+    rpc GetGamesList (GetGamesListReq) returns (GetGamesListRes);
+}
