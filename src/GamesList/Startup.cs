@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamesList.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,8 @@ namespace GamesList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddSingleton<EventsConsumer>();
+            services.AddSingleton<ServerState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,13 +34,16 @@ namespace GamesList
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<GamesList.Services.GamesListService>();
 
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                 });
             });
+
+            using var scope = app.ApplicationServices.CreateScope();
+            scope.ServiceProvider.GetService<EventsConsumer>();
         }
     }
 }
