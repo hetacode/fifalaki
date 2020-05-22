@@ -2,16 +2,13 @@ using System.Collections.Generic;
 
 namespace Contracts.Events
 {
-    public class UpdatedPlayers : Event
+    public class UpdatedPlayers : FromGameEvent
     {
         public override string Type => "UpdatedPlayers";
-    }
-    public class FromGameEvent : Event
-    {
-        public string GameId { get; set; }
 
-        public List<string> PlayersIds { get; set; }
+        public List<PlayerData> Players { get; set; }
     }
+
     public class WaitingForNextLevel : FromGameEvent
     {
         public override string Type => "WaitingForNextLevel";
@@ -51,10 +48,22 @@ namespace Contracts.Events
         public string WinnerId { get; set; }
     }
 
+    public class PlayerData {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+    }
     public class Answer
     {
         public int Id { get; set; }
 
         public string Value { get; set; }
+    }
+
+    public class FromGameEvent : Event
+    {
+        public string GameId { get; set; }
+
+        public List<string> PlayersIds { get; set; }
     }
 }

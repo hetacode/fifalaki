@@ -48,25 +48,41 @@ namespace Game
 
         private void CallEndGame(CallEndGame endGame)
         {
-             var game = _games[endGame.GameId];
-             game.EndGame();
-             _games.Remove(endGame.GameId);
+            if (!_games.ContainsKey(endGame.GameId))
+            {
+                return;
+            }
+            var game = _games[endGame.GameId];
+            game.EndGame();
+            _games.Remove(endGame.GameId);
         }
 
         private void GiveAnswer(GiveAnswer giveAnswer)
         {
+            if (!_games.ContainsKey(giveAnswer.GameId))
+            {
+                return;
+            }
             var game = _games[giveAnswer.GameId];
             game?.Answer(giveAnswer.PlayerId, giveAnswer.AnswerId);
         }
 
         private void StartGame(StartGame startGame)
         {
+            if (!_games.ContainsKey(startGame.GameId))
+            {
+                return;
+            }
             var game = _games[startGame.GameId];
             game?.Start();
         }
 
         private void AddPlayer(AddPlayer addPlayer)
         {
+            if (!_games.ContainsKey(addPlayer.GameId))
+            {
+                return;
+            }
             var game = _games[addPlayer.GameId];
             game?.AddPlayer(new Player { Id = addPlayer.Id, Name = addPlayer.Name });
         }

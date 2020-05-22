@@ -21,13 +21,18 @@ namespace Arch.Bus
 
         public void InitPublisher()
         {
-            var factory = new ConnectionFactory()
-            {
-                Uri = new Uri(_server)
-            };
+            Task.Run(() =>
+           {
+               var factory = new ConnectionFactory()
+               {
+                   Uri = new Uri(_server)
+               };
 
-            using var connection = factory.CreateConnection();
-            _publisherChannel = connection.CreateModel();
+               using var connection = factory.CreateConnection();
+               _publisherChannel = connection.CreateModel();
+               _publisherChannel.ExchangeDeclare(_exchange, ExchangeType.Fanout);
+               Console.Read();
+           });
         }
 
         public void Consumer(Action<(string eventType, string body)> callback)
@@ -66,9 +71,15 @@ namespace Arch.Bus
 
         public async Task Publish(Event eventData)
         {
-            var data = JsonSerializer.Serialize(eventData, typeof(Event));
+            var data = JsonSerializer.Serialize(eventData, eventData.GetType());
             var bytes = Encoding.UTF8.GetBytes(data);
             _publisherChannel.BasicPublish(_exchange, "", body: bytes);
+            if (_publisherChannel.IsClosed)
+            {
+                _publisherChannel.Close();
+                _publisherChannel.Dispose();
+                InitPublisher();
+            }
         }
     }
 }
