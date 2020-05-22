@@ -6,8 +6,8 @@ namespace Arch.Bus
 {
     public interface IBus
     {
+        void InitPublisher();
         void Consumer(Action<(string eventType, string body)> callback);
-
         Task Publish(Event Event);
     }
 }

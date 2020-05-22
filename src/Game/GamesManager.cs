@@ -11,10 +11,14 @@ namespace Game
     public class GamesManager
     {
         private Dictionary<string, GameRunner> _games = new Dictionary<string, GameRunner>();
+        private readonly IBus _rtmPublisherBus;
 
-        public GamesManager(IBus bus)
+        public GamesManager(IBus consumerBus, IBus rtmPublisherBus)
         {
-            bus.Consumer(ConsumeEvent);
+            rtmPublisherBus.InitPublisher();
+            consumerBus.Consumer(ConsumeEvent);
+
+            _rtmPublisherBus = rtmPublisherBus;
         }
 
         private void ConsumeEvent((string eventType, string body) data)
@@ -69,7 +73,7 @@ namespace Game
 
         private void NewGame(CreateGame createGame)
         {
-            var runner = new GameRunner(createGame.ClientId);
+            var runner = new GameRunner(createGame.ClientId, _rtmPublisherBus);
             _games.Add(createGame.ClientId, runner);
         }
     }

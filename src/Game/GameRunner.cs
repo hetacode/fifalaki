@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Arch.Bus;
 using Game.Models;
 
 namespace Game
@@ -12,12 +13,15 @@ namespace Game
 
         public State GameState { get; }
 
-        public GameRunner(string gameMasterId)
+        private readonly IBus _publishEvent;
+
+        public GameRunner(string gameMasterId, IBus publishEvent)
         {
             GameState = new State
             {
                 GameMasterId = gameMasterId
             };
+            _publishEvent = publishEvent;
         }
 
         public void AddPlayer(Player player)

@@ -14,9 +14,21 @@ namespace Arch.Bus
         private string _server;
         private string _queue;
         private string _exchange;
+        private IModel _publisherChannel;
 
         public RabbitMQBus(string server, string queue, string exchange)
             => (_server, _queue, _exchange) = (server, queue, exchange);
+
+        public void InitPublisher()
+        {
+            var factory = new ConnectionFactory()
+            {
+                Uri = new Uri(_server)
+            };
+
+            using var connection = factory.CreateConnection();
+            _publisherChannel = connection.CreateModel();
+        }
 
         public void Consumer(Action<(string eventType, string body)> callback)
         {
@@ -52,9 +64,11 @@ namespace Arch.Bus
             });
         }
 
-        public Task Publish(Event Event)
+        public async Task Publish(Event eventData)
         {
-            throw new NotImplementedException();
+            var data = JsonSerializer.Serialize(eventData, typeof(Event));
+            var bytes = Encoding.UTF8.GetBytes(data);
+            _publisherChannel.BasicPublish(_exchange, "", body: bytes);
         }
     }
 }
