@@ -5,3 +5,22 @@ services:
     ports: 
       - 5672:5672
       - 15672:15672
+  game:
+    build:
+      context: .
+      dockerfile: Game/Dockerfile
+      target: prod
+    image: fifalaki-game:latest
+    depends_on: 
+      - rabbit
+  games-list:
+    build:
+      context: .
+      dockerfile: GamesList/Dockerfile
+      target: prod
+    image: fifalaki-games-list:latest
+    ports:
+      - 5001:5001
+    depends_on: 
+      - rabbit
+    

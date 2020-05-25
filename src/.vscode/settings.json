@@ -5,6 +5,9 @@
     "Contracts/obj": true,
     "Contracts/bin": true,
     "Arch/bin": true,
-    "Arch/obj": true
+    "Arch/obj": true,
+    "GamesList/bin/Debug": true,
+    "GamesList/bin": true,
+    "GamesList/obj": true
   }
 }
