@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace GamesList
 {
@@ -22,9 +24,17 @@ namespace GamesList
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureKestrel(o =>
-                        { 
-                            o.ListenLocalhost(5001, listen => listen.Protocols = HttpProtocols.Http2);
+                    webBuilder.ConfigureKestrel((c, o) =>
+                        {
+                            if (c.Configuration["ReleaseMode"] == "dev")
+                            {
+                                o.ListenLocalhost(5001, listen => listen.Protocols = HttpProtocols.Http2);
+                            }
+                            else
+                            {
+                                o.ListenAnyIP(5001, listen => listen.Protocols = HttpProtocols.Http2);
+                            }
+
                         })
                         .UseStartup<Startup>();
                 });

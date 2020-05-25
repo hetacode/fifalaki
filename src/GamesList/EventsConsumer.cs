@@ -5,6 +5,7 @@ using Arch;
 using Arch.Bus;
 using Contracts.Events;
 using GamesList.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace GamesList
 {
@@ -12,10 +13,10 @@ namespace GamesList
     {
         private readonly ServerState _state;
 
-        public EventsConsumer(ServerState state)
+        public EventsConsumer(IConfiguration config, ServerState state)
         {
             _state = state;
-            var gameConsumerBus = new RabbitMQBus("amqp://guest:guest@localhost:5672", "games-list", "game-ex");
+            var gameConsumerBus = new RabbitMQBus(config["RabbitServer"], "games-list", "game-ex");
             gameConsumerBus.Consumer(GameEventsConsumer);
         }
 
@@ -27,6 +28,11 @@ namespace GamesList
             switch (e)
             {
                 case CreateGame createGame:
+                    var selectedGame = _state.Games.FirstOrDefault(a => a.Id == createGame.ClientId);
+                    if (!(selectedGame is null))
+                    {
+                        _state.Games.Remove(selectedGame);
+                    }
                     _state.Games.Add(new ProtoContracts.GameItem { Id = createGame.ClientId });
                     break;
                 case EndGame endGame:

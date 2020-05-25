@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Contracts.Events;
 using RabbitMQ.Client;
@@ -31,7 +32,7 @@ namespace Arch.Bus
                using var connection = factory.CreateConnection();
                _publisherChannel = connection.CreateModel();
                _publisherChannel.ExchangeDeclare(_exchange, ExchangeType.Fanout);
-               Console.Read();
+               Thread.Sleep(Timeout.Infinite);
            });
         }
 
@@ -65,7 +66,8 @@ namespace Arch.Bus
                 };
                 channel.BasicConsume(queue: _queue, autoAck: false, consumer: consumer);
 
-                Console.Read();
+                Thread.Sleep(Timeout.Infinite);
+
             });
         }
 

@@ -13,8 +13,14 @@ services:
     image: fifalaki-game:latest
     depends_on: 
       - rabbit
-    healthcheck:
-      test: curl -f http://rabbit:5672 || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 10
+  games-list:
+    build:
+      context: .
+      dockerfile: GamesList/Dockerfile
+      target: prod
+    image: fifalaki-games-list:latest
+    ports:
+      - 5001:5001
+    depends_on: 
+      - rabbit
+    
