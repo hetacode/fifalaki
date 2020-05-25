@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Game Srv",
             "type": "coreclr",
@@ -23,6 +24,17 @@
             "program": "${workspaceFolder}/GamesList/bin/Debug/net5.0/GamesList.dll",
             "args": [],
             "cwd": "${workspaceFolder}/GamesList",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Rtm Srv",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Rtm/bin/Debug/net5.0/Rtm.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Rtm",
             "console": "internalConsole",
             "stopAtEntry": false
         },
