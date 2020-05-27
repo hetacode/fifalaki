@@ -10,6 +10,7 @@
     "GamesList/bin": true,
     "GamesList/obj": true,
     "Rtm/bin": true,
-    "Rtm/obj": true
+    "Rtm/obj": true,
+    "Rtm/node_modules": true
   }
 }
