@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "Game Srv",
             "type": "coreclr",
@@ -28,15 +29,15 @@
             "stopAtEntry": false
         },
         {
-            "name": "Rtm Srv",
-            "type": "coreclr",
+            "type": "node",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Rtm/bin/Debug/net5.0/Rtm.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Rtm",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/Rtm",
+            "runtimeExecutable": "npm run start",
+
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "name": ".NET Core Attach",

@@ -11,9 +11,11 @@
   "author": "seba",
   "license": "ISC",
   "dependencies": {
+    "@types/amqplib": "^0.5.13",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
     "@types/socket.io": "^2.1.8",
+    "amqplib": "^0.5.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http": "0.0.1-security",
