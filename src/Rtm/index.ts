@@ -22,6 +22,10 @@ busService().then(() => {
         s.on("disconnect", () => {
             console.log(`Client connected: ${s.client.id}`)
             usersService.removeConnection(s.client.id)
+
+            // TODO: send event to game-ex about user disconnection
+            // TODO: dockerize this service - remembee node14
+            // TODO: gateway rest - for game and games list services
         })
     })
 
