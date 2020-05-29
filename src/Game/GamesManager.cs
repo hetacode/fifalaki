@@ -27,6 +27,8 @@ namespace Game
             var eventType = EventRecognizer.GetEventBy(data.eventType);
             var e = JsonSerializer.Deserialize(data.body, eventType);
 
+            Console.WriteLine(data.body);
+
             switch (e)
             {
                 case CreateGame createGame:
