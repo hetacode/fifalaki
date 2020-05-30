@@ -1,15 +1,23 @@
+using System.Threading.Tasks;
+using Gateway.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GamesController
     {
-        [HttpGet("games")]
-        public JsonResult GetGamesList()
+        private readonly GamesListGrpcService _gamesListService;
+
+        public GamesController(GamesListGrpcService gamesListService)
+            => _gamesListService = gamesListService;
+
+        [HttpGet("list")]
+        public async Task<JsonResult> GetGamesList()
         {
-            return new JsonResult(new { Beka = "ff" });
+            var result = await _gamesListService.GetGamesList();
+            return new JsonResult(result);
         }
     }
 }
