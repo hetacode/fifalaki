@@ -13,7 +13,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/Gateway",
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
         },
         {
             "name": "Game Srv",

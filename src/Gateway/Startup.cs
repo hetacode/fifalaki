@@ -28,6 +28,7 @@ namespace Gateway
         {
             services.AddControllers();
             services.AddSingleton<GamesListGrpcService>();
+            services.AddSingleton<GamesBusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +51,7 @@ namespace Gateway
             });
 
             using var scope = app.ApplicationServices.CreateScope();
+            scope.ServiceProvider.GetService<GamesBusService>();
             scope.ServiceProvider.GetService<GamesListGrpcService>().Init();
 
         }
