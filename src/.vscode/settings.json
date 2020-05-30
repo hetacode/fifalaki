@@ -12,6 +12,8 @@
     "Rtm/bin": true,
     "Rtm/obj": true,
     "Rtm/node_modules": true,
-    "Rtm/out": true
+    "Rtm/out": true,
+    "Gateway/obj": true,
+    "Gateway/bin": true
   }
 }
