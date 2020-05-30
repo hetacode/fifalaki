@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+
         {
             "name": "Game Srv",
             "type": "coreclr",
@@ -25,6 +27,17 @@
             "cwd": "${workspaceFolder}/GamesList",
             "console": "internalConsole",
             "stopAtEntry": false
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/Rtm",
+            "runtimeExecutable": "npm run start",
+
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "name": ".NET Core Attach",

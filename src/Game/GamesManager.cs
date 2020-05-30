@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Arch;
 using Arch.Bus;
@@ -26,6 +27,8 @@ namespace Game
             var eventType = EventRecognizer.GetEventBy(data.eventType);
             var e = JsonSerializer.Deserialize(data.body, eventType);
 
+            Console.WriteLine(data.body);
+
             switch (e)
             {
                 case CreateGame createGame:
@@ -43,6 +46,19 @@ namespace Game
                 case CallEndGame endGame:
                     CallEndGame(endGame);
                     break;
+                case RemovePlayer removePlayer:
+                    RemovePlayer(removePlayer);
+                    break;
+            }
+        }
+
+        private void RemovePlayer(RemovePlayer removePlayer)
+        {
+            var game = _games.FirstOrDefault(f => f.Value.GameState.Players.Any(a => a.Id == removePlayer.Id)).Value;
+            game?.EndGame();
+            if (!(game is null))
+            {
+                _games.Remove(game.GameState.GameMasterId);
             }
         }
 

@@ -8,6 +8,10 @@
     "Arch/obj": true,
     "GamesList/bin/Debug": true,
     "GamesList/bin": true,
-    "GamesList/obj": true
+    "GamesList/obj": true,
+    "Rtm/bin": true,
+    "Rtm/obj": true,
+    "Rtm/node_modules": true,
+    "Rtm/out": true
   }
 }
