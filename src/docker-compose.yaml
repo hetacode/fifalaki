@@ -23,4 +23,14 @@ services:
       - 5001:5001
     depends_on: 
       - rabbit
+  rtm:
+    build:
+      context: .
+      dockerfile: Rtm/Dockerfile
+    image: fifalaki-rtm:latest
+    env_file: Rtm/.env.docker
+    ports:
+      - 5010:5010
+    depends_on: 
+      - rabbit
     
