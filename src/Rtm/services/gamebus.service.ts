@@ -14,7 +14,8 @@ import amqp, { Channel } from "amqplib"
     }
 
     publish = (event: string) => {
-        let res = this.channel?.publish("game-ex", "", new Buffer(event, "utf-8")) ?? false
+        let bufMsg = Buffer.alloc(event.length, event, "utf-8")
+        let res = this.channel?.publish("game-ex", "", bufMsg) ?? false
         console.log(`Event: {event} is published: {res}`)
     }
 }
