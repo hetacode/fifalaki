@@ -42,5 +42,15 @@ button.new-game:active {
 }
 
 .games-list {
-  flex-grow: 1;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.list {
+}
+.list-item {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  padding: 5px;
 }

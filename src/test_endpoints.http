@@ -8,5 +8,5 @@ Content-Type: application/json
 
 {
     "Type": "CreateGame",
-    "ClientId": "abc125"
+    "ClientId": "5346"
 }

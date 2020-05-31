@@ -7,8 +7,7 @@ export function useGetGamesList() {
 
     const get = async () => {
         let res = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/api/games/list`)
-        console.log(res.data)
-        // TODO: same to recoil state
+        setGamesList(res.data.items)
     }
     return get
 }
