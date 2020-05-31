@@ -29,6 +29,12 @@ namespace Gateway
             services.AddControllers();
             services.AddSingleton<GamesListGrpcService>();
             services.AddSingleton<GamesBusService>();
+
+            services.AddCors(o => {
+                o.AddPolicy("Cors", b => {
+                    b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +48,8 @@ namespace Gateway
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("Cors");
 
             app.UseAuthorization();
 
