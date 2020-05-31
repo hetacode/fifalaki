@@ -7,8 +7,12 @@ interface Props {
 
 const MainPage = (props: Props) => {
     return (
-        <div>
+        <div className="main-page">
             <Word word="FIFALAKI" />
+            <button className="new-game">NOWA GRA</button>
+            <div className="games-list">
+                
+            </div>
         </div>
     )
 }
