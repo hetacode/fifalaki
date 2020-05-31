@@ -1,7 +1,7 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
-# Created by https://www.gitignore.io/api/visualstudiocode,macos,dotnetcore,node
-# Edit at https://www.gitignore.io/?templates=visualstudiocode,macos,dotnetcore,node
+# Created by https://www.gitignore.io/api/visualstudiocode,node,macos,dotnetcore,react
+# Edit at https://www.gitignore.io/?templates=visualstudiocode,node,macos,dotnetcore,react
 
 ### DotnetCore ###
 # .NET Core build folders
@@ -148,6 +148,19 @@ out/
 tmp/
 temp/
 
+### react ###
+.DS_*
+**/*.backup.*
+**/*.back.*
+
+node_modules
+
+*.sublime*
+
+psd
+thumb
+sketch
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -159,7 +172,7 @@ temp/
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/visualstudiocode,macos,dotnetcore,node
+# End of https://www.gitignore.io/api/visualstudiocode,node,macos,dotnetcore,react
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
