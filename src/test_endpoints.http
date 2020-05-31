@@ -1,0 +1,11 @@
+get http://localhost:5002/api/games/list
+
+###
+
+post http://localhost:5002/api/games/event
+Content-Type: application/json
+
+{
+    "Type": "CreateGame",
+    "ClientId": "abc125"
+}
