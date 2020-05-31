@@ -23,6 +23,16 @@ services:
       - 5001:5001
     depends_on: 
       - rabbit
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+      target: prod
+    image: fifalaki-gateway:latest
+    ports:
+      - 5002:5002
+    depends_on: 
+      - rabbit
   rtm:
     build:
       context: .
