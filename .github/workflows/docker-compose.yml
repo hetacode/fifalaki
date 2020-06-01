@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Docker Compose
-      run: cd src && docker -v && docker-compose -v && && docker-compose build --no-cache
+      run: cd src && docker -v && docker-compose -v && docker-compose build --no-cache
