@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Player } from '../../model/player'
+import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { gameState } from '../../states/game.state'
 import Counter from '../../components/counter'
 import Word from '../../components/word'
+import { gameSummarySelector } from '../../selectors/game-summary.selector'
+import { gameState } from '../../states/game.state'
 
 interface Props {
 }
@@ -11,7 +11,8 @@ interface Props {
 const MasterGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
-    const state = useRecoilValue(gameState);
+    const state = useRecoilValue(gameState)
+    const summarySelector = useRecoilValue(gameSummarySelector)
 
     const [time, setTime] = useState(0);
 
@@ -64,9 +65,47 @@ const MasterGamePage = (props: Props) => {
         </div>
     }
 
+    const summary = () => {
+        return <div className="master-game">
+            <div className="word" style={{ paddingBottom: "15px", fontSize: "30px" }}>PODSUMOWANIE</div>
+            <div style={{ paddingBottom: "15px" }}>Liczba prób: {state.attempts}</div>
+            {summarySelector.winner
+                ? <div>Zwycięzca: {summarySelector.winner}</div>
+                : null
+            }
+            {summarySelector.looser
+                ? <div>Przegrany: {summarySelector.looser}</div>
+                : null
+            }
+            <div style={{ paddingTop: "15px" }}>Punktacja:</div>
+            {summarySelector.points.map(m => <div className="list-item">
+                <div style={{ flex: 1 }}>{m.name}</div>
+                <div>{m.points} pkt</div>
+            </div>)}
+        </div>
+    }
+
+    const endGame = () => {
+        return <div className="master-game">
+            <div className="word" style={{ paddingBottom: "15px", fontSize: "30px" }}>KONIEC GRY</div>
+
+            {summarySelector.winner
+                ? <div style={{ color: "green" }}>Zwycięzca: {summarySelector.winner}</div>
+                : null
+            }
+            <button className="new-game" style={{ padding: "10 0" }}>MENU</button>
+            <div style={{ paddingTop: "15px" }}>Punktacja:</div>
+            
+            {summarySelector.points.map(m => <div className="list-item">
+                <div style={{ flex: 1 }}>{m.name}</div>
+                <div>{m.points} pkt</div>
+            </div>)}
+        </div>
+    }
+
     return (
         <div>
-            {level()}
+            {endGame()}
         </div>
     )
 }

@@ -11,7 +11,13 @@ export const gameState = atom<IGameState>({
         ],
         state: GameStateEnum.WaitingForPlayers,
         maxTime: Number.MAX_VALUE,
-        letters: "SPZDAA"
+        letters: "SPZDAA",
+        attempts: 5,
+        winnerId: "123",
+        points: {
+            "123": 150,
+            "122": 14
+        }
     }
 });
 
@@ -19,5 +25,9 @@ interface IGameState {
     players: Player[],
     state: GameStateEnum,
     maxTime: number,
-    letters?: string
+    letters?: string,
+    attempts?: number,
+    winnerId?: string,
+    looserId?: string,
+    points?: { [key:string]:number; } 
 }
