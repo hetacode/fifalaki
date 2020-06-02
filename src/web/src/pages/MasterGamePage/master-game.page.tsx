@@ -4,6 +4,7 @@ import Counter from '../../components/counter'
 import Word from '../../components/word'
 import { gameSummarySelector } from '../../selectors/game-summary.selector'
 import { gameState } from '../../states/game.state'
+import { GameStateEnum } from '../../enums/game-state.enum'
 
 interface Props {
 }
@@ -95,7 +96,7 @@ const MasterGamePage = (props: Props) => {
             }
             <button className="new-game" style={{ padding: "10 0" }}>MENU</button>
             <div style={{ paddingTop: "15px" }}>Punktacja:</div>
-            
+
             {summarySelector.points.map(m => <div className="list-item">
                 <div style={{ flex: 1 }}>{m.name}</div>
                 <div>{m.points} pkt</div>
@@ -103,9 +104,24 @@ const MasterGamePage = (props: Props) => {
         </div>
     }
 
+    const renderState = () => {
+        switch (state.state) {
+            case GameStateEnum.WaitingForPlayers:
+                return waitingForPlayersState()
+            case GameStateEnum.WaitingForLevel:
+                return waitingForNextLevel()
+            case GameStateEnum.SummaryLevel:
+                return summary()
+            case GameStateEnum.Level:
+                return level()
+            case GameStateEnum.EndGame:
+                return endGame()
+        }
+    }
+
     return (
         <div>
-            {endGame()}
+            {renderState()}
         </div>
     )
 }
