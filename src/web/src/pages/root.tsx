@@ -4,6 +4,13 @@ import PlayerGamePage from './PlayerGamePage/player-game.page'
 import { useSetRecoilState } from 'recoil'
 import { appState, IAppState } from '../states/app.state'
 import { useEventsProcessor } from '../hooks/events-processor.hook'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from "react-router-dom";
+import MainPage from './MainPage/main.page'
+import MasterGamePage from './MasterGamePage/master-game.page'
 
 interface Props {
 
@@ -12,7 +19,7 @@ interface Props {
 const Root = (props: Props) => {
     const setAppState = useSetRecoilState(appState)
     const processEvents = useEventsProcessor()
-    
+
 
     useEffect(() => {
         let socket = io(`${process.env.REACT_APP_RTM_ENDPOINT}`)
@@ -26,12 +33,22 @@ const Root = (props: Props) => {
             setAppState((s: IAppState) => { return { ...s, connectionId: socket.id } })
         })
     }, [])
+
     return (
-        <div>
-            <PlayerGamePage />
-            {/* <MasterGamePage/> */}
-            {/* <MainPage /> */}
-        </div>
+        // TODO: problem with routing and useHistory
+        <Router>
+            <Switch>
+                <Route path="/">
+                    <MainPage />
+                </Route>
+                <Route path="/master">
+                    <MasterGamePage />
+                </Route>
+                <Route path="/game">
+                    <PlayerGamePage />
+                </Route>
+            </Switch>
+        </Router>
     )
 }
 
