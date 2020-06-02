@@ -20,6 +20,8 @@ namespace Contracts.Events
     {
         public override string Type => "NewLevel";
 
+        public string Letters { get; set; }
+
         public List<Answer> Answers { get; set; }
     }
 

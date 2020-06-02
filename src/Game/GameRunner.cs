@@ -159,11 +159,13 @@ namespace Game
                 }
             };
             GameState.CurrentTime = 0;
-
+            var correctWord = GameState.LevelData.Words[GameState.LevelData.CorrectWordIndex];
+            var shuffle = new string(correctWord.ToCharArray().OrderBy(x => Guid.NewGuid()).ToArray());
             var ev = new NewLevel
             {
                 GameId = GameState.GameMasterId,
                 PlayersIds = GameState.Players.Select(s => s.Id).ToList(),
+                Letters = shuffle,
                 Answers = GameState.LevelData.Words.Select((s, i) => new Answer { Id = i, Value = s }).ToList()
             };
             _publishEvent.Publish(ev);
