@@ -67,3 +67,8 @@ button.new-game:active {
   font-weight: 600;
   padding-top: 10px;
 }
+
+.counter {
+  font-size: 30px;
+  color: rgb(16, 97, 204);
+}
