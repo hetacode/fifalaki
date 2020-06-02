@@ -48,9 +48,22 @@ button.new-game:active {
 
 .list {
 }
+
 .list-item {
   display: flex;
   flex-direction: row;
   text-align: left;
   padding: 5px;
+}
+
+.master-game {
+  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-item {
+  text-align: center;
+  font-weight: 600;
+  padding-top: 10px;
 }
