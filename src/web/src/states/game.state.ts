@@ -17,7 +17,11 @@ export const gameState = atom<IGameState>({
         points: {
             "123": 150,
             "122": 14
-        }
+        },
+        answers: [
+            { Id: 1, Value: "SZPADA" },
+            { Id: 2, Value: "CHOCO" }
+        ]
     }
 });
 
@@ -29,5 +33,6 @@ interface IGameState {
     attempts?: number,
     winnerId?: string,
     looserId?: string,
-    points?: { [key:string]:number; } 
+    points?: { [key: string]: number; }
+    answers?: { Id: number, Value: string }[]
 }
