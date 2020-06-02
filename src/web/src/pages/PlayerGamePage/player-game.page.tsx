@@ -16,6 +16,8 @@ const PlayerGamePage = (props: Props) => {
     const summarySelector = useRecoilValue(gameSummarySelector)
 
     const [time, setTime] = useState(0);
+    const [joinMode, setJoinMode] = useState(true)
+    const [playername, setPlayername] = useState("")
 
     useEffect(() => {
         timer = setInterval(() => { updateTime() }, 1000)
@@ -36,6 +38,14 @@ const PlayerGamePage = (props: Props) => {
 
     function updateTime() {
         setTime(time => time + 1)
+    }
+
+    const join = () => {
+        return <div className="master-game">
+            <div className="word" style={{ paddingBottom: "15px" }}>Dołącz jako...</div>
+            <input type="text" className="join-input" value={playername} onChange={e => setPlayername(e.target.value)} />
+            <button className="new-game">DOŁACZ</button>
+        </div>
     }
 
     const waitingForPlayersState = () => {
@@ -91,7 +101,10 @@ const PlayerGamePage = (props: Props) => {
 
     return (
         <div>
-            {renderState()}
+            {joinMode
+                ? join()
+                : renderState()
+            }
         </div>
     )
 }

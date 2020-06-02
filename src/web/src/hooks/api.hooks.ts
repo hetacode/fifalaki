@@ -11,3 +11,11 @@ export function useGetGamesList() {
     }
     return get
 }
+
+export function useSendEvent() {
+    const send = async (event: any) => {
+        await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/games/event`, JSON.stringify(event), { headers: { "content-type": "application/json" } })
+    }
+
+    return send
+}
