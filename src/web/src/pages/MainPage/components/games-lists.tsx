@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRecoilValue } from 'recoil'
-import { gamesListState } from '../../../recoil/states/games-list.state'
+import { gamesListState } from '../../../states/games-list.state'
 
 interface Props {
 

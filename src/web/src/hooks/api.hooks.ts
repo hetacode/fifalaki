@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { gamesListState } from "../recoil/states/games-list.state"
+import { gamesListState } from "../states/games-list.state"
 import axios from "axios"
 
 export function useGetGamesList() {
