@@ -5,15 +5,14 @@ import { RecoilRoot } from "recoil";
 import MainPage from './pages/MainPage/main.page';
 import MasterGamePage from './pages/MasterGamePage/master-game.page';
 import PlayerGamePage from './pages/PlayerGamePage/player-game.page';
+import Root from './pages/root';
 
 function App() {
   return (
     <RecoilRoot>
       <div className="App">
         <header className="App-header">
-          <PlayerGamePage />
-          {/* <MasterGamePage/> */}
-          {/* <MainPage /> */}
+          <Root />
         </header>
       </div>
     </RecoilRoot>
