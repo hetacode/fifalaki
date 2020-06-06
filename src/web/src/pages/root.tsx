@@ -43,7 +43,7 @@ const Root = (props: Props) => {
                 <Route path="/master">
                     <MasterGamePage />
                 </Route>
-                <Route path="/game">
+                <Route path="/game/:id">
                     <PlayerGamePage />
                 </Route>
             </Switch>

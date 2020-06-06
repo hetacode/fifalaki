@@ -5,6 +5,6 @@ namespace GamesList.Services
 {
     public class ServerState
     {
-        public List<GameItem> Games { get; set; } = new List<GameItem>();
+        public List<(GameItem item, List<string> players)> Games { get; set; } = new List<(GameItem, List<string>)>();
     }
 }

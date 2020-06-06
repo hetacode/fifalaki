@@ -4,6 +4,10 @@ import { gameSummarySelector } from '../../selectors/game-summary.selector'
 import { gameState } from '../../states/game.state'
 import Counter from '../../components/counter'
 import { GameStateEnum } from '../../enums/game-state.enum'
+import { useParams } from 'react-router-dom'
+import { useSendEvent } from '../../hooks/api.hooks'
+import { AddPlayer } from '../../events/to-game.events'
+import { appState } from '../../states/app.state'
 
 interface Props {
 
@@ -12,6 +16,9 @@ interface Props {
 const PlayerGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
+    const sendEvent = useSendEvent()
+    const params = useParams<{id: string}>()
+    const app = useRecoilValue(appState)
     const state = useRecoilValue(gameState)
     const summarySelector = useRecoilValue(gameSummarySelector)
 
@@ -40,11 +47,22 @@ const PlayerGamePage = (props: Props) => {
         setTime(time => time + 1)
     }
 
+    const joinAction = () => {
+        let joinEvent = new AddPlayer()
+        joinEvent.GameId = params.id
+        joinEvent.Id = app.connectionId
+        joinEvent.Name = playername
+        
+        sendEvent(joinEvent)
+
+        setJoinMode(false)
+    }
+
     const join = () => {
         return <div className="master-game">
             <div className="word" style={{ paddingBottom: "15px" }}>Dołącz jako...</div>
             <input type="text" className="join-input" value={playername} onChange={e => setPlayername(e.target.value)} />
-            <button className="new-game">DOŁACZ</button>
+            <button className="new-game" onClick={joinAction}>DOŁACZ</button>
         </div>
     }
 
