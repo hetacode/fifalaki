@@ -6,7 +6,7 @@ import { gameSummarySelector } from '../../selectors/game-summary.selector'
 import { gameState } from '../../states/game.state'
 import { GameStateEnum } from '../../enums/game-state.enum'
 import { appState } from '../../states/app.state'
-import { CreateGame } from '../../events/to-game.events'
+import { CreateGame, StartGame } from '../../events/to-game.events'
 import { useSendEvent } from '../../hooks/api.hooks'
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const MasterGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
-    const api = useSendEvent()
+    const sendEvent = useSendEvent()
     const app = useRecoilValue(appState)
     const state = useRecoilValue(gameState)
     const summarySelector = useRecoilValue(gameSummarySelector)
@@ -27,7 +27,7 @@ const MasterGamePage = (props: Props) => {
         let createGameEvent = new CreateGame()
         createGameEvent.ClientId = app.connectionId
 
-        api(createGameEvent)
+        sendEvent(createGameEvent)
 
         return () => {
             clearInterval(timer)
@@ -48,10 +48,16 @@ const MasterGamePage = (props: Props) => {
         setTime(time => time + 1)
     }
 
+    const startAction = () => {
+        let startGame = new StartGame()
+        startGame.GameId = app.connectionId
+        sendEvent(startGame)
+    }
+
     const waitingForPlayersState = () => {
         return <div className="master-game">
             <div className="word" style={{ paddingBottom: "15px" }}>Czekanie na graczy...</div>
-            <button className="new-game">START</button>
+            <button className="new-game" onClick={startAction}>START</button>
             <div className="games-list">
                 {state.players.map(m => <div className="player-item">
                     {m.Name}

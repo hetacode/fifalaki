@@ -6,7 +6,7 @@ import Counter from '../../components/counter'
 import { GameStateEnum } from '../../enums/game-state.enum'
 import { useParams } from 'react-router-dom'
 import { useSendEvent } from '../../hooks/api.hooks'
-import { AddPlayer } from '../../events/to-game.events'
+import { AddPlayer, StartGame } from '../../events/to-game.events'
 import { appState } from '../../states/app.state'
 
 interface Props {
@@ -17,7 +17,7 @@ const PlayerGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
     const sendEvent = useSendEvent()
-    const params = useParams<{id: string}>()
+    const params = useParams<{ id: string }>()
     const app = useRecoilValue(appState)
     const state = useRecoilValue(gameState)
     const summarySelector = useRecoilValue(gameSummarySelector)
@@ -52,10 +52,16 @@ const PlayerGamePage = (props: Props) => {
         joinEvent.GameId = params.id
         joinEvent.Id = app.connectionId
         joinEvent.Name = playername
-        
+
         sendEvent(joinEvent)
 
         setJoinMode(false)
+    }
+
+    const startAction = () => {
+        let startGame = new StartGame()
+        startGame.GameId = params.id
+        sendEvent(startGame)
     }
 
     const join = () => {
@@ -69,7 +75,7 @@ const PlayerGamePage = (props: Props) => {
     const waitingForPlayersState = () => {
         return <div className="master-game">
             <div className="word" style={{ paddingBottom: "15px" }}>Czekanie na graczy...</div>
-            <button className="new-game">START</button>
+            <button className="new-game" onClick={startAction}>START</button>
         </div>
     }
 
