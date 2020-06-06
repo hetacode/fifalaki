@@ -35,10 +35,9 @@ const Root = (props: Props) => {
     }, [])
 
     return (
-        // TODO: problem with routing and useHistory
         <Router>
             <Switch>
-                <Route path="/">
+                <Route exact path="/">
                     <MainPage />
                 </Route>
                 <Route path="/master">
