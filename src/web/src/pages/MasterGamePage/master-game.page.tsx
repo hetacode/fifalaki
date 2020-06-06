@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import Counter from '../../components/counter'
 import Word from '../../components/word'
 import { gameSummarySelector } from '../../selectors/game-summary.selector'
 import { gameState } from '../../states/game.state'
 import { GameStateEnum } from '../../enums/game-state.enum'
+import { appState } from '../../states/app.state'
+import { CreateGame } from '../../events/to-game.events'
+import { useSendEvent } from '../../hooks/api.hooks'
 
 interface Props {
 }
@@ -12,6 +15,8 @@ interface Props {
 const MasterGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
+    const api = useSendEvent()
+    const app = useRecoilValue(appState)
     const state = useRecoilValue(gameState)
     const summarySelector = useRecoilValue(gameSummarySelector)
 
@@ -19,6 +24,11 @@ const MasterGamePage = (props: Props) => {
 
     useEffect(() => {
         timer = setInterval(() => { updateTime() }, 1000)
+        let createGameEvent = new CreateGame()
+        createGameEvent.ClientId = app.connectionId
+
+        api(createGameEvent)
+
         return () => {
             clearInterval(timer)
         }

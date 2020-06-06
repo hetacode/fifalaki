@@ -5,23 +5,14 @@ import { GameStateEnum } from "../enums/game-state.enum";
 export const gameState = atom<IGameState>({
     key: "gameState",
     default: {
-        players: [
-            { Id: "123", Name: "Zdzich" },
-            { Id: "122", Name: "Dzon" }
-        ],
+        players: [],
         state: GameStateEnum.WaitingForPlayers,
         maxTime: Number.MAX_VALUE,
-        letters: "SPZDAA",
+        letters: "",
         attempts: 5,
-        winnerId: "123",
-        points: {
-            "123": 150,
-            "122": 14
-        },
-        answers: [
-            { Id: 1, Value: "SZPADA" },
-            { Id: 2, Value: "CHOCO" }
-        ]
+        winnerId: "",
+        points: {},
+        answers: []
     }
 });
 
