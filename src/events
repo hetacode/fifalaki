@@ -9,3 +9,8 @@
 "Name": "Janusz",
 "Id": "123"
 }
+
+{
+    "Type": "StartGame",
+    "GameId": "abc124"
+}

@@ -43,7 +43,7 @@ namespace Game
 
         public void Start()
         {
-            Console.WriteLine($"Game is start | Id: {GameState.GameMasterId}");
+            Console.WriteLine($"Game is started | Id: {GameState.GameMasterId}");
             GameState.CurrentState = EnumGameState.WaitingForNextLevel;
             GameState.CurrentTime = 0;
 
@@ -55,6 +55,7 @@ namespace Game
             };
             _publishEvent.Publish(ev);
 
+            _isRunning = true;
             _gameTask = Task.Run(Running);
         }
 
@@ -73,7 +74,7 @@ namespace Game
             ShowSummary();
         }
 
-        private void Running()
+        private async void Running()
         {
             for (; ; )
             {
@@ -91,7 +92,8 @@ namespace Game
                     case EnumGameState.Summary:
                         if (GameState.CurrentTime >= GameState.TotalStateTime())
                         {
-                            ShowSummary();
+                           GameState.CurrentState = EnumGameState.WaitingForNextLevel;
+                           GameState.CurrentTime = 0;
                         }
                         break;
                     case EnumGameState.WaitingForNextLevel:
@@ -112,7 +114,7 @@ namespace Game
                 }
 
                 GameState.CurrentTime++;
-                Task.Delay(1000);
+                await Task.Delay(1000);
             }
         }
 
@@ -169,7 +171,7 @@ namespace Game
                 Answers = GameState.LevelData.Words.Select((s, i) => new Answer { Id = i, Value = s }).ToList()
             };
             _publishEvent.Publish(ev);
-            GameState.CurrentTime = 0;
+            GameState.CurrentState = EnumGameState.Level;
         }
 
         private void EndLevel()
