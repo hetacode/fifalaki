@@ -1,3 +1,4 @@
+
 get http://localhost:5002/api/games/list
 
 ###
@@ -7,5 +8,5 @@ Content-Type: application/json
 
 {
     "Type": "CreateGame",
-    "ClientId": "abc125"
+    "ClientId": "5346"
 }

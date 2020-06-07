@@ -14,6 +14,8 @@
     "Rtm/node_modules": true,
     "Rtm/out": true,
     "Gateway/obj": true,
-    "Gateway/bin": true
+    "Gateway/bin": true,
+    "web/node_modules": true,
+    "web/public": true
   }
 }

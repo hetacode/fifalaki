@@ -1,0 +1,16 @@
+{
+"Type": "CreateGame",
+"ClientId": "abc124"
+}
+
+{
+"Type": "AddPlayer",
+"GameId": "abc124",
+"Name": "Janusz",
+"Id": "123"
+}
+
+{
+    "Type": "StartGame",
+    "GameId": "abc124"
+}

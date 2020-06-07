@@ -43,7 +43,7 @@ namespace Game
 
         public void Start()
         {
-            Console.WriteLine($"Game is start | Id: {GameState.GameMasterId}");
+            Console.WriteLine($"Game is started | Id: {GameState.GameMasterId}");
             GameState.CurrentState = EnumGameState.WaitingForNextLevel;
             GameState.CurrentTime = 0;
 
@@ -55,6 +55,7 @@ namespace Game
             };
             _publishEvent.Publish(ev);
 
+            _isRunning = true;
             _gameTask = Task.Run(Running);
         }
 
@@ -63,17 +64,19 @@ namespace Game
             if (GameState.LevelData.CorrectWordIndex == answerId)
             {
                 GameState.LevelData.WinnerId = playerId;
+                GameState.Players.FirstOrDefault(f => f.Id == playerId).Points++;
             }
             else
             {
                 GameState.LevelData.LooserId = playerId;
+                GameState.Players.FirstOrDefault(f => f.Id == playerId).Points--;
+                GameState.GameAttempts++;
             }
 
-            GameState.CurrentState = EnumGameState.Summary;
-            ShowSummary();
+            EndLevel();
         }
 
-        private void Running()
+        private async void Running()
         {
             for (; ; )
             {
@@ -91,7 +94,8 @@ namespace Game
                     case EnumGameState.Summary:
                         if (GameState.CurrentTime >= GameState.TotalStateTime())
                         {
-                            ShowSummary();
+                            GameState.CurrentState = EnumGameState.WaitingForNextLevel;
+                            GameState.CurrentTime = 0;
                         }
                         break;
                     case EnumGameState.WaitingForNextLevel:
@@ -103,6 +107,7 @@ namespace Game
                     case EnumGameState.Level:
                         if (GameState.CurrentTime >= GameState.TotalStateTime())
                         {
+                            GameState.GameAttempts++;
                             EndLevel();
                         }
                         break;
@@ -112,7 +117,7 @@ namespace Game
                 }
 
                 GameState.CurrentTime++;
-                Task.Delay(1000);
+                await Task.Delay(1000);
             }
         }
 
@@ -125,7 +130,7 @@ namespace Game
             {
                 GameId = GameState.GameMasterId,
                 PlayersIds = GameState.Players.Select(s => s.Id).ToList(),
-                Points = GameState.Players.ToDictionary(k => k.Id, e => e.Points),
+                Points = GameState.Players.Where(w => w.Id != GameState.GameMasterId).ToDictionary(k => k.Id, e => e.Points),
                 WinnerId = GameState.Players.OrderByDescending(m => m.Points).First().Id
             };
             _publishEvent.Publish(ev);
@@ -140,7 +145,7 @@ namespace Game
                 Attempts = GameState.GameAttempts,
                 LooserId = GameState.LevelData.LooserId,
                 WinnerId = GameState.LevelData.WinnerId,
-                Points = GameState.Players.ToDictionary(k => k.Id, e => e.Points)
+                Points = GameState.Players.Where(w => w.Id != GameState.GameMasterId).ToDictionary(k => k.Id, e => e.Points)
             };
             _publishEvent.Publish(ev);
             GameState.CurrentTime = 0;
@@ -159,20 +164,22 @@ namespace Game
                 }
             };
             GameState.CurrentTime = 0;
-
+            var correctWord = GameState.LevelData.Words[GameState.LevelData.CorrectWordIndex];
+            var shuffle = new string(correctWord.ToCharArray().OrderBy(x => Guid.NewGuid()).ToArray());
             var ev = new NewLevel
             {
                 GameId = GameState.GameMasterId,
                 PlayersIds = GameState.Players.Select(s => s.Id).ToList(),
+                Letters = shuffle,
                 Answers = GameState.LevelData.Words.Select((s, i) => new Answer { Id = i, Value = s }).ToList()
             };
             _publishEvent.Publish(ev);
-            GameState.CurrentTime = 0;
+            GameState.CurrentState = EnumGameState.Level;
         }
 
         private void EndLevel()
         {
-            GameState.GameAttempts++;
+            // GameState.GameAttempts++;
             if (GameState.GameAttempts >= 5)
             {
                 GameState.CurrentState = EnumGameState.End;

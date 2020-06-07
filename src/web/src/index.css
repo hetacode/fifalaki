@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.letter {
+  font-size: 90px;
+  padding: 15px;
+}
+
+.word {
+  padding-top: 50px;
+  display: flex;
+  flex-direction: row;
+  color: white;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+}
+
+button.new-game {
+  align-self: center;
+  border-radius: 15px;
+  border-width: 0px;
+  width: auto;
+  background-color: rgb(0, 155, 0);
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.733);
+  padding: 15px;
+}
+
+button.new-game:active {
+  background-color: rgb(2, 131, 2);
+}
+
+.games-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.list {}
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  padding: 5px;
+}
+
+.master-game {
+  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-item {
+  text-align: center;
+  font-weight: 600;
+  padding-top: 10px;
+}
+
+.counter {
+  font-size: 30px;
+  color: rgb(16, 97, 204);
+}
+
+.level-game-container {
+  display: flex;
+  height: 100vh;
+  font-size: 28px;
+  vertical-align: middle;
+  align-content: center;
+  align-items: center;
+}
+
+.level-game {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+}
+
+.answer-button {
+  width: 300;
+  font-size: 30px;
+  background-color: rgb(36, 98, 211);
+  color: white;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.join-input {
+  font-size: 20px;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin: 15px 0;
+}
