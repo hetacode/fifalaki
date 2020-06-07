@@ -1,13 +1,26 @@
 package main
 
+import (
+	"log"
+	"os"
+
+	"github.com/hetacode/fifalaki/words/services"
+	"github.com/robfig/cron/v3"
+)
+
 func main() {
 	// TODO:
-	// Write side
-	// 1. download words list from https://sjp.pl/slownik/growy/ in cron scheduler - on start and then 24h
-	// 2. unpack zip
-	// 3. process words - take only 5-7 chars words
-	// 4. put them to redis
 
+	done := make(chan os.Signal)
+	// Process words on startup
+	words := new(services.WordsProcessorService)
+	go words.Processing()
+	c := cron.New()
+	c.AddFunc("@daily", words.Processing)
+	c.Start()
+
+	log.Printf("Words service processor is running")
+	<-done
 	// TODO
 	// Read side
 	// 1. get 10 random keys
