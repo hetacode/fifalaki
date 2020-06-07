@@ -5,11 +5,12 @@ import (
 	"os"
 
 	"github.com/hetacode/fifalaki/words/services"
+	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
 )
 
 func main() {
-	// TODO:
+	godotenv.Load()
 
 	done := make(chan os.Signal)
 	// Process words on startup
