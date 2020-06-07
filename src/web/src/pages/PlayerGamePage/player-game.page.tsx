@@ -6,7 +6,7 @@ import Counter from '../../components/counter'
 import { GameStateEnum } from '../../enums/game-state.enum'
 import { useParams } from 'react-router-dom'
 import { useSendEvent } from '../../hooks/api.hooks'
-import { AddPlayer, StartGame } from '../../events/to-game.events'
+import { AddPlayer, StartGame, GiveAnswer } from '../../events/to-game.events'
 import { appState } from '../../states/app.state'
 
 interface Props {
@@ -58,6 +58,15 @@ const PlayerGamePage = (props: Props) => {
         setJoinMode(false)
     }
 
+    const selectAnswerAction = (id: number) => {
+        let answer = new GiveAnswer()
+        answer.AnswerId = id
+        answer.GameId = params.id
+        answer.PlayerId = app.connectionId
+
+        sendEvent(answer)
+    }
+
     const startAction = () => {
         let startGame = new StartGame()
         startGame.GameId = params.id
@@ -102,7 +111,7 @@ const PlayerGamePage = (props: Props) => {
         return <div className="level-game-container">
             <div className="level-game">
                 <Counter time={time} />
-                {state.answers?.map(m => <button className="answer-button">{m.Value}</button>)}
+                {state.answers?.map(m => <button className="answer-button" onClick={() => selectAnswerAction(m.Id)}>{m.Value}</button>)}
             </div>
         </div>
     }
