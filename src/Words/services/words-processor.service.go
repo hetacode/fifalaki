@@ -1,6 +1,10 @@
 package services
 
 import (
+	"archive/zip"
+	"bytes"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -27,8 +31,25 @@ func (s *WordsProcessorService) Processing() {
 		log.Print(err)
 		return
 	}
+	file, err := http.Get(wordsURL)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	defer file.Body.Close()
 
-	log.Print(wordsURL)
+	buff := bytes.NewBuffer([]byte{})
+	size, err := io.Copy(buff, file.Body)
+	if err != nil {
+		return
+	}
+
+	reader := bytes.NewReader(buff.Bytes())
+	z, err := zip.NewReader(reader, size)
+	if err != nil {
+		return
+	}
+	log.Printf("%+v", z)
 }
 
 func parseSJPPageAndGetWordsZIPUrl() (string, error) {
@@ -62,6 +83,8 @@ func parseSJPPageAndGetWordsZIPUrl() (string, error) {
 		}
 	}
 	f(doc)
-
+	if wordsFilename == "" {
+		return "", fmt.Errorf("Cannot find zip file url")
+	}
 	return os.Getenv("SJP_URL") + wordsFilename, nil
 }
