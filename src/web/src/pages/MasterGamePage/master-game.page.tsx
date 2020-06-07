@@ -8,6 +8,7 @@ import { GameStateEnum } from '../../enums/game-state.enum'
 import { appState } from '../../states/app.state'
 import { CreateGame, StartGame } from '../../events/to-game.events'
 import { useSendEvent } from '../../hooks/api.hooks'
+import { useHistory } from 'react-router-dom'
 
 interface Props {
 }
@@ -19,6 +20,7 @@ const MasterGamePage = (props: Props) => {
     const app = useRecoilValue(appState)
     const state = useRecoilValue(gameState)
     const summarySelector = useRecoilValue(gameSummarySelector)
+    const history = useHistory()
 
     const [time, setTime] = useState(0);
 
@@ -110,7 +112,7 @@ const MasterGamePage = (props: Props) => {
                 ? <div style={{ color: "green" }}>Zwycięzca: {summarySelector.winner}</div>
                 : null
             }
-            <button className="new-game" style={{ padding: "10 0" }}>MENU</button>
+            <button className="new-game" style={{ padding: "10 0" }} onClick={() => history.push("/")}>MENU</button>
             <div style={{ paddingTop: "15px" }}>Punktacja:</div>
 
             {summarySelector.points.map(m => <div className="list-item">

@@ -18,7 +18,7 @@ export function useEventsProcessor() {
                 setGameState(s => { return { ...s, state: GameStateEnum.Level, letters: e.Letters, answers: e.Answers } })
                 break;
             case "SummaryLevel":
-                setGameState(s => { return { ...s, state: GameStateEnum.SummaryLevel, points: e.Points, attempts: e.attempts, winnerId: e.WinnerId, looserId: e.LooserId } })
+                setGameState(s => { return { ...s, state: GameStateEnum.SummaryLevel, points: e.Points, attempts: e.GameAttempts, winnerId: e.WinnerId, looserId: e.LooserId } })
                 break;
             case "EndGame":
                 setGameState(s => { return { ...s, state: GameStateEnum.EndGame, points: e.Points, winnerId: e.WinnerId } })

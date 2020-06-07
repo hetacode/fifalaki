@@ -4,7 +4,7 @@ import { gameSummarySelector } from '../../selectors/game-summary.selector'
 import { gameState } from '../../states/game.state'
 import Counter from '../../components/counter'
 import { GameStateEnum } from '../../enums/game-state.enum'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useSendEvent } from '../../hooks/api.hooks'
 import { AddPlayer, StartGame, GiveAnswer } from '../../events/to-game.events'
 import { appState } from '../../states/app.state'
@@ -16,6 +16,7 @@ interface Props {
 const PlayerGamePage = (props: Props) => {
     let timer: NodeJS.Timeout
 
+    const history = useHistory()
     const sendEvent = useSendEvent()
     const params = useParams<{ id: string }>()
     const app = useRecoilValue(appState)
@@ -98,12 +99,14 @@ const PlayerGamePage = (props: Props) => {
     const summary = () => {
         return <div className="master-game">
             <div className="word" style={{ paddingBottom: "15px", fontSize: "30px" }}>PODSUMOWANIE</div>
+            <button className="new-game" style={{ padding: "10 0" }} onClick={() => history.push("/")}>MENU</button>
         </div>
     }
 
     const endGame = () => {
         return <div className="master-game">
             <div className="word" style={{ paddingBottom: "15px", fontSize: "30px" }}>KONIEC GRY</div>
+            <button className="new-game" style={{ padding: "10 0" }} onClick={() => history.push("/")}>MENU</button>
         </div>
     }
 
