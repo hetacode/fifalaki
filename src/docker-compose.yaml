@@ -43,4 +43,12 @@ services:
       - 5010:5010
     depends_on: 
       - rabbit
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    image: fifalaki-web:latest
+    env_file: web/.env.docker
+    ports:
+      - 5000:3000
     
