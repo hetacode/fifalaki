@@ -70,7 +70,9 @@ func (s *WordsProcessorService) Processing() {
 
 }
 
-func wordsProcessing()
+func wordsProcessing() {
+
+}
 
 func parseSJPPageAndGetWordsZIPUrl() (string, error) {
 	page, err := http.Get(os.Getenv("SJP_URL"))
