@@ -11,11 +11,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hetacode/fifalaki/words/db"
 	"golang.org/x/net/html"
 )
 
 // WordsProcessorService structure
 type WordsProcessorService struct {
+	DB *db.RedisKeyValueDB
 }
 
 // Processing write side logic
@@ -41,16 +43,34 @@ func (s *WordsProcessorService) Processing() {
 	buff := bytes.NewBuffer([]byte{})
 	size, err := io.Copy(buff, file.Body)
 	if err != nil {
+		log.Print(err)
 		return
 	}
 
 	reader := bytes.NewReader(buff.Bytes())
 	z, err := zip.NewReader(reader, size)
 	if err != nil {
+		log.Print(err)
 		return
 	}
-	log.Printf("%+v", z)
+
+	var wordsFile *zip.File
+	for _, file := range z.File {
+		log.Printf("%s", file.Name)
+		if file.Name == os.Getenv("WORDS_FILENAME") {
+			wordsFile = file
+			break
+		}
+	}
+
+	if wordsFile == nil {
+		log.Print("Cannot fint words file inside zip")
+		return
+	}
+
 }
+
+func wordsProcessing()
 
 func parseSJPPageAndGetWordsZIPUrl() (string, error) {
 	page, err := http.Get(os.Getenv("SJP_URL"))
