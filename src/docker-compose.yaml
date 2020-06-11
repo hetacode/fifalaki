@@ -17,6 +17,10 @@ services:
     image: fifalaki-game:latest
     depends_on: 
       - rabbit
+    healthcheck:
+      test: exit 1 && curl -f http://rabbit:5672 || exit 1
+      timeout: 20s
+      retries: 10
   games-list:
     build:
       context: .
@@ -27,6 +31,10 @@ services:
       - 5001:5001
     depends_on: 
       - rabbit
+    healthcheck:
+      test: exit 1 && curl -f http://rabbit:5672 || exit 1
+      timeout: 20s
+      retries: 10
   gateway:
     build:
       context: .
@@ -37,6 +45,10 @@ services:
       - 5002:5002
     depends_on: 
       - rabbit
+    healthcheck:
+      test: exit 1 && curl -f http://rabbit:5672 || exit 1
+      timeout: 20s
+      retries: 10
   rtm:
     build:
       context: .
@@ -47,6 +59,10 @@ services:
       - 5010:5010
     depends_on: 
       - rabbit
+    healthcheck:
+      test: exit 1 && curl -f http://guest:guest@rabbit:5672/api/aliveness-test/%2F || exit 1
+      timeout: 20s
+      retries: 10
   words:
     build:
       context: ./Words
@@ -54,7 +70,13 @@ services:
     image: fifalaki-words:latest
     env_file: Words/.env.docker
     ports:
-      - 5003:3003
+      - 5003:5003
+    depends_on:
+      - redis
+    healthcheck:
+      test: exit 1 && curl -f http://redis:6379 || exit 1
+      timeout: 20s
+      retries: 10
   web:
     build:
       context: .

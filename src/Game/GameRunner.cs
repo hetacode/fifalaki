@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using Arch.Bus;
 using Contracts.Events;
 using Game.Models;
+using Game.Services;
 
 namespace Game
 {
     public class GameRunner
     {
+        private static Random rnd = new Random();
+        private readonly WordsGrpcService _words;
+
         private Task _gameTask;
         private bool _isRunning;
         private bool _stop;
@@ -18,8 +22,9 @@ namespace Game
 
         private readonly IBus _publishEvent;
 
-        public GameRunner(string gameMasterId, IBus publishEvent)
+        public GameRunner(string gameMasterId, IBus publishEvent, WordsGrpcService words)
         {
+            _words = words;
             GameState = new State
             {
                 GameMasterId = gameMasterId,
@@ -151,17 +156,13 @@ namespace Game
             GameState.CurrentTime = 0;
         }
 
-        private void NextLevel()
+        private async void NextLevel()
         {
+            var newWords = await _words.GetNewWordsList();
             GameState.LevelData = new LevelData
             {
-                CorrectWordIndex = 2,
-                Words = new List<string>{
-                    "oluszon",
-                    "bejbuszon",
-                    "sebuszon",
-                    "gofer"
-                }
+                CorrectWordIndex = rnd.Next(0, newWords.Count - 1),
+                Words = newWords
             };
             GameState.CurrentTime = 0;
             var correctWord = GameState.LevelData.Words[GameState.LevelData.CorrectWordIndex];
@@ -173,7 +174,7 @@ namespace Game
                 Letters = shuffle,
                 Answers = GameState.LevelData.Words.Select((s, i) => new Answer { Id = i, Value = s }).ToList()
             };
-            _publishEvent.Publish(ev);
+            await _publishEvent.Publish(ev);
             GameState.CurrentState = EnumGameState.Level;
         }
 
