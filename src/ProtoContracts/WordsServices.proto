@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProtoContracts";
+package proto;
+
+message GetWordsPackageReq{
+}
+
+message GetWordsPackageRes {
+    repeated string words = 1;
+}
+
+service WordsService {
+    rpc GetWordsPackage(GetWordsPackageReq) returns (GetWordsPackageRes);
+}

@@ -1,5 +1,9 @@
 version: "3.7"
 services:
+  redis:
+    image: redis:6.0.4
+    ports:
+      - 6379:6379
   rabbit:
     image: rabbitmq:3.8.3-management-alpine
     ports: 
@@ -43,6 +47,14 @@ services:
       - 5010:5010
     depends_on: 
       - rabbit
+  words:
+    build:
+      context: ./Words
+      dockerfile: Dockerfile
+    image: fifalaki-words:latest
+    env_file: Words/.env.docker
+    ports:
+      - 5003:3003
   web:
     build:
       context: .
