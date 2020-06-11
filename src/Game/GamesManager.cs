@@ -6,6 +6,7 @@ using Arch;
 using Arch.Bus;
 using Contracts.Events;
 using Game.Models;
+using Game.Services;
 
 namespace Game
 {
@@ -13,9 +14,11 @@ namespace Game
     {
         private Dictionary<string, GameRunner> _games = new Dictionary<string, GameRunner>();
         private readonly IBus _rtmPublisherBus;
+        private readonly WordsGrpcService _words;
 
-        public GamesManager(IBus consumerBus, IBus rtmPublisherBus)
+        public GamesManager(IBus consumerBus, IBus rtmPublisherBus, WordsGrpcService words)
         {
+            _words = words;
             rtmPublisherBus.InitPublisher();
             consumerBus.Consumer(ConsumeEvent);
 
@@ -105,7 +108,7 @@ namespace Game
 
         private void NewGame(CreateGame createGame)
         {
-            var runner = new GameRunner(createGame.ClientId, _rtmPublisherBus);
+            var runner = new GameRunner(createGame.ClientId, _rtmPublisherBus, _words);
             _games.Add(createGame.ClientId, runner);
         }
     }
