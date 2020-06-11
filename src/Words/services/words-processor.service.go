@@ -2,6 +2,7 @@ package services
 
 import (
 	"archive/zip"
+	"bufio"
 	"bytes"
 	"fmt"
 	"io"
@@ -68,10 +69,33 @@ func (s *WordsProcessorService) Processing() {
 		return
 	}
 
+	if err := s.wordsProcessing(wordsFile); err != nil {
+		log.Print(err)
+	}
+
 }
 
-func wordsProcessing() {
+func (s *WordsProcessorService) wordsProcessing(file *zip.File) error {
+	log.Print("Start processing words")
+	r, err := file.Open()
+	if err != nil {
+		return err
+	}
 
+	total := 0
+	processed := 0
+	scan := bufio.NewScanner(r)
+	for scan.Scan() {
+		text := scan.Text()
+		l := len(text)
+		total++
+		if l >= 5 && l <= 7 {
+			processed++
+			s.DB.Put(text, time.Now().Format("Mon Jan 2 15:04:05 -0700 MST 2006"))
+		}
+	}
+	log.Printf("End processing words | Total: %d Processed: %d", total, processed)
+	return nil
 }
 
 func parseSJPPageAndGetWordsZIPUrl() (string, error) {
