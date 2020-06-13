@@ -82,7 +82,6 @@ services:
       context: .
       dockerfile: web/Dockerfile
     image: fifalaki-web:latest
-    env_file: web/.env.docker
     ports:
       - 5000:3000
     
